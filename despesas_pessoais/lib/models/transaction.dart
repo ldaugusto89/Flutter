@@ -1,4 +1,3 @@
-
 class Transaction {
   final String id;
   final String title;
@@ -11,5 +10,4 @@ class Transaction {
     required this.value,
     required this.date,
   });
-
 }
