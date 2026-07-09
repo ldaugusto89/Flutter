@@ -86,6 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
+  void _removeTransaction(String id) {
+    setState(() {
+      transactions.removeWhere((tr) => tr.id == id);
+    });
+  }
+
   List<Transaction> get _recentTransactions {
     return transactions.where((tr){
       return tr.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
@@ -121,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.infinity,
               child: Chart(_recentTransactions),
             ),
-            TransactionList(transactions),
+            TransactionList(transactions, _removeTransaction),
           ],
         ),
       ),
