@@ -57,6 +57,7 @@ class MainApp extends StatelessWidget {
         ),
       ),
       home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -70,6 +71,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> transactions = [];
+  bool _showChart = false;
 
   void _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
@@ -93,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Transaction> get _recentTransactions {
-    return transactions.where((tr){
+    return transactions.where((tr) {
       return tr.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
@@ -101,33 +103,75 @@ class _MyHomePageState extends State<MyHomePage> {
   void _openModalTransaction(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (_) {
-        return TransactionForm(_addTransaction);
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: TransactionForm(_addTransaction),
+          ),
+        );
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Despesas'),
-        actions: [
-          IconButton(
-            onPressed: () => _openModalTransaction(context),
-            icon: Icon(Icons.add),
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape =
+        mediaQuery.orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      title: Text('Despesas'),
+      actions: [
+        if (isLandscape)
+          Row(
+            children: [
+              Text(
+                'Exibir Gráfico',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Switch(
+                value: _showChart,
+                onChanged: (value) {
+                  setState(() {
+                    _showChart = value;
+                  });
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        IconButton(
+          onPressed: () => _openModalTransaction(context),
+          icon: Icon(Icons.add),
+        ),
+      ],
+    );
+
+    final availableHeight =
+        mediaQuery.size.height -
+        appBar.preferredSize.height -
+        mediaQuery.padding.top;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: Chart(_recentTransactions),
-            ),
-            TransactionList(transactions, _removeTransaction),
+            if (_showChart || !isLandscape)
+              SizedBox(
+                height: availableHeight * (isLandscape ? 0.7 : 0.25),
+                width: double.infinity,
+                child: Chart(_recentTransactions),
+              ),
+            if (!_showChart || !isLandscape)
+              SizedBox(
+                height: availableHeight * (isLandscape ? 1 : 0.75),
+                child: TransactionList(transactions, _removeTransaction),
+              ),
           ],
         ),
       ),

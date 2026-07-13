@@ -66,9 +66,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 children: [
                   Expanded(
                     child: Text(
-                        "Data Selecionada: ${DateFormat(
-                          'dd/MM/y',
-                        ).format(_selectedDate)}",
+                      "Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}",
                     ),
                   ),
                   TextButton(
