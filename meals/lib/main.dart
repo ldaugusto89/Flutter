@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meals/screens/categories_screen.dart';
+import 'package:meals/screens/meal_detail_screen.dart';
+import 'screens/categories_meals_screen.dart';
+import 'utils/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,23 +16,32 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Vamos cozinhar?',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, secondary: Colors.amber, primary: Colors.pink ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, secondary: Colors.amber, primary: Colors.pink,   ),
+        useMaterial3: true,
         primaryColor: Colors.pink,
+        scaffoldBackgroundColor: Color.fromRGBO(255, 254, 229, 1),
         appBarTheme: AppBarThemeData(
           backgroundColor: Colors.pink,
-          foregroundColor: Colors.white
+          foregroundColor: Colors.white,
+          centerTitle: true
         ),
         textTheme: TextTheme(
           titleLarge: TextStyle(
-            fontFamily: 'Raleway'
+            fontFamily: 'Raleway',
           ),
-          titleMedium: TextStyle(
-            fontFamily: 'Raleway'
+          bodyMedium: TextStyle(
+            fontSize: 20,
+            fontFamily: 'RobotoCondensed',
           )
         )
       ),
-      home: CategoriesScreen(),
+      routes: {
+        AppRoutes.home:(context) => CategoriesScreen(),
+        AppRoutes.categoriesMeals: (context) => CategoriesMealsScreen(),
+        AppRoutes.mealDetails:(context) => MealDetailScreen(),
+      },
     );
   }
 }
