@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Vamos cozinhar?',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, secondary: Colors.amber, primary: Colors.pink,   ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink, secondary: Colors.amber, primary: Colors.pink,   ),
         useMaterial3: true,
         primaryColor: Colors.pink,
         scaffoldBackgroundColor: Color.fromRGBO(255, 254, 229, 1),
