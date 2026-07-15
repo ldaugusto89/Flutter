@@ -14,12 +14,14 @@ class TabsScreen extends StatelessWidget {
           title: Text('vamos cozinhar'),
           bottom: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.category), text: 'Categorias'),
-              Tab(icon: Icon(Icons.star), text: 'Favoritos'),
+              Tab(icon: Icon(Icons.category, color: Colors.white,), text: 'Categorias'),
+              Tab(icon: Icon(Icons.star, color: Colors.white,), text: 'Favoritos'),
             ],
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey[300],
           ),
         ),
-        body: TabBarView(children: [CategoriesScreen(), FavoriteScreen()]),
+        body: TabBarView(children: [CategoriesScreen(), FavoriteScreen()],),
       ),
     );
   }
