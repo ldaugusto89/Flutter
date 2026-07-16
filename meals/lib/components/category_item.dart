@@ -8,7 +8,9 @@ class CategoryItem extends StatelessWidget {
   final Category category;
 
   void _selectCategory(BuildContext context) {
-    Navigator.of(context).pushNamed(AppRoutes.categoriesMeals, arguments: category);
+    Navigator.of(
+      context,
+    ).pushNamed(AppRoutes.categoriesMeals, arguments: category);
   }
 
   @override

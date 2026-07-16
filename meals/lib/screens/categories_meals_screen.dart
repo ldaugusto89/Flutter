@@ -4,7 +4,7 @@ import 'package:meals/models/meal.dart';
 import '../models/category.dart';
 
 class CategoriesMealsScreen extends StatelessWidget {
-  const CategoriesMealsScreen(this.meals,{super.key});
+  const CategoriesMealsScreen(this.meals, {super.key});
 
   final List<Meal> meals;
 
