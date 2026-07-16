@@ -6,27 +6,24 @@ class MealDetailScreen extends StatelessWidget {
 
   Widget _createSectionTitle(BuildContext context, String title) {
     return Container(
-            margin: const .symmetric(vertical: 10),
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          );
+      margin: const .symmetric(vertical: 10),
+      child: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+    );
   }
 
-  Widget _createSectionContainer(Widget child){
+  Widget _createSectionContainer(Widget child) {
     return Container(
-            width: 330,
-            height: 200,
-            padding: const .all(10),
-            margin: const .all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: .all(color: Colors.grey),
-              borderRadius: .circular(10)
-            ),
-            child: child
-          );
+      width: 330,
+      height: 200,
+      padding: const .all(10),
+      margin: const .all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: .all(color: Colors.grey),
+        borderRadius: .circular(10),
+      ),
+      child: child,
+    );
   }
 
   @override
@@ -50,31 +47,41 @@ class MealDetailScreen extends StatelessWidget {
                   return Card(
                     color: Theme.of(context).colorScheme.secondary,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 10,
+                      ),
                       child: Text(meal.ingredients[index]),
                     ),
                   );
                 },
-              )
+              ),
             ),
             _createSectionTitle(context, 'Passos'),
             _createSectionContainer(
-              ListView.builder(itemCount: meal.steps.length,itemBuilder: (context,index) {
-                return Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text('${index + 1}'),
+              ListView.builder(
+                itemCount: meal.steps.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(child: Text('${index + 1}')),
+                        title: Text(meal.steps[index]),
                       ),
-                      title: Text(meal.steps[index]),
-                    ),
-                    Divider()
-                  ],
-                );
-              })
-            )
+                      Divider(),
+                    ],
+                  );
+                },
+              ),
+            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.star),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
