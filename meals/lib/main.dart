@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/models/settings.dart';
 import 'package:meals/screens/meal_detail_screen.dart';
 import 'package:meals/screens/settings_screen.dart';
 import 'package:meals/screens/tabs_screen.dart';
@@ -19,7 +20,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Settings settings = Settings();
   List<Meal> _avaliableMeals = dummyMeals;
+
+  void _filterMeals(Settings settings) {
+    setState(() {
+      this.settings = settings;
+
+      _avaliableMeals = dummyMeals.where((meal) {
+        final filterGluten = settings.isGlutenFree && !meal.isGlutenFree;
+        final filterLactose = settings.isLactoseFree && !meal.isLactoseFree;
+        final filterVegan = settings.isVegan && !meal.isVegan;
+        final filterVegetarian = settings.isVegetarian && !meal.isVegetarian;
+
+        return !filterGluten &&
+            !filterLactose &&
+            !filterVegan &&
+            !filterVegetarian;
+      }).toList();
+    });
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -27,31 +48,30 @@ class _MyAppState extends State<MyApp> {
       title: 'Vamos cozinhar?',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink, secondary: Colors.amber, primary: Colors.pink,),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.pink,
+          secondary: Colors.amber,
+          primary: Colors.pink,
+        ),
         useMaterial3: true,
         primaryColor: Colors.pink,
         scaffoldBackgroundColor: Color.fromRGBO(255, 254, 229, 1),
         appBarTheme: AppBarThemeData(
           backgroundColor: Colors.pink,
           foregroundColor: Colors.white,
-          centerTitle: true
+          centerTitle: true,
         ),
-        
         textTheme: TextTheme(
-          titleLarge: TextStyle(
-            fontFamily: 'Raleway',
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 20,
-            fontFamily: 'RobotoCondensed',
-          ),
-        )
+          titleLarge: TextStyle(fontFamily: 'Raleway'),
+          bodyMedium: TextStyle(fontSize: 20, fontFamily: 'RobotoCondensed'),
+        ),
       ),
       routes: {
-        AppRoutes.home:(context) => TabsScreen(),
-        AppRoutes.categoriesMeals: (context) => CategoriesMealsScreen(_avaliableMeals),
-        AppRoutes.mealDetails:(context) => MealDetailScreen(),
-        AppRoutes.settings:(context) => SettingsScreen(),
+        AppRoutes.home: (context) => TabsScreen(),
+        AppRoutes.categoriesMeals: (context) =>
+            CategoriesMealsScreen(_avaliableMeals),
+        AppRoutes.mealDetails: (context) => MealDetailScreen(),
+        AppRoutes.settings: (context) => SettingsScreen(settings, _filterMeals),
       },
     );
   }
